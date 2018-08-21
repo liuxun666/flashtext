@@ -15,4 +15,11 @@ object DictUtils {
     words.filter(!_.isEmpty).foreach(word => dic.addWord(word.trim))
     dic
   }
+
+  def loadDict[T](words: Map[String, T]) = {
+    val dic = Dictionary[T](0.toChar)
+    dic.addWord(words)
+    dic
+  }
+
 }

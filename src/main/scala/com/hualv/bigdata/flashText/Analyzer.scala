@@ -20,15 +20,15 @@ object Analyzer {
     *   # return: Array(Word(大家,0,1), Word(大家好,0,2))<br>
     * @param text 需要查找的文本
     * @param dictionary 词典
-    * @param isSmart 是否智能匹配(默认：true)，true: 按起始位置和长度优秀返回结果，不允许词之间重叠，false：返回最细粒度的结果
+    * @param isSmart 是否智能匹配(默认：true)，true: 按起始位置和长度优先返回结果，不允许词之间重叠，false：返回最细粒度的结果
     * @return
     */
-  def analyze(text: String, dictionary: Dictionary, isSmart: Boolean = false): Array[Word] = {
+  def analyze[T](text: String, dictionary: Dictionary[T], isSmart: Boolean = false): Array[Word] = {
     val charArray = text.toCharArray
     var cursor = 0
     val words = mutable.ArrayBuffer[Word]()
-    val hits = mutable.Buffer[Hit]()
-    var hit: Hit = null
+    val hits = mutable.Buffer[Hit[T]]()
+    var hit: Hit[T] = null
     while (cursor < charArray.length){
       //先处理所有前缀匹配的词
       while (hits.nonEmpty){
@@ -36,7 +36,7 @@ object Analyzer {
         if(hit.getEnd < charArray.length - 1){
           hit = hit.getMatchedDictSegment.`match`(charArray, hit.getEnd + 1, hit)
           if(hit.isMatch){
-            val w = Word(charArray.slice(hit.getBegin, hit.getEnd + 1).mkString, hit.getBegin, hit.getEnd + 1)
+            val w = Word(charArray.slice(hit.getBegin, hit.getEnd + 1).mkString, hit.getBegin, hit.getEnd + 1, hit.getMatchedDictSegment.getValue())
             //如果智能匹配，并且当前词和上一个词重叠了，比较两个词的大小再决定取哪一个
             if(isSmart){
               if(words.isEmpty){
@@ -67,7 +67,7 @@ object Analyzer {
       //当前没有前缀匹配时，重新匹配
       hit = dictionary.`match`(charArray, cursor)
       if(hit.isMatch){
-        val w = Word(charArray.slice(hit.getBegin, hit.getEnd + 1).mkString, hit.getBegin, hit.getEnd + 1)
+        val w = Word(charArray.slice(hit.getBegin, hit.getEnd + 1).mkString, hit.getBegin, hit.getEnd + 1, hit.getMatchedDictSegment.getValue())
         if(isSmart){
           if(words.isEmpty){
             words += w
@@ -97,18 +97,12 @@ object Analyzer {
     words.toArray
   }
 
-
-
 }
 
-case class Word(word: String, begin: Int, end: Int) extends Comparable[Word] {
+ case class Word(word: String, begin: Int, end: Int, info: Any = null) extends Comparable[Word] {
   val length: Int = end - begin
+   //TODO allow custom compare func
 
-  /**
-    * 比较两个词：起始位置优先，再长度优先
-    * @param t
-    * @return
-    */
   override def compareTo(t: Word): Int = {
     if(this.begin < t.begin) 1
     else if(this.begin == t.begin){
@@ -116,6 +110,46 @@ case class Word(word: String, begin: Int, end: Int) extends Comparable[Word] {
       else if (this.end == t.end) 0
       else -1
     }else -1
+  }
+
+   /**
+     * 比较两个词：起始位置优先，再长度优先
+     * @param t
+     * @return
+     */
+  def beginFirst(t: Word): Int = {
+    if(this.begin < t.begin) 1
+    else if(this.begin == t.begin){
+      if(this.end > t.end) 1
+      else if (this.end == t.end) 0
+      else -1
+    }else -1
+  }
+
+   /**
+     * 比较两个词：结束位置优先，再长度优先
+     * @param t
+     * @return
+     */
+  def endFirst(t: Word): Int = {
+    if(this.end > t.end) 1
+    else if(this.end == t.end){
+      if(this.begin < t.begin) 1
+      else if( this.begin == this.begin) 0
+      else -1
+    }else -1
+  }
+
+   /**
+     * 比较两个词：长度优先，再起始位置优先
+     * @param t
+     * @return
+     */
+  def lengthFirst(t: Word): Int = {
+    if(this.fullContain(t) || this.overlap(t)){
+      //重叠
+      this.length.compareTo(t.length)
+    }else this.begin.compareTo(t.begin)
   }
 
   override def equals(o: scala.Any): Boolean = {
