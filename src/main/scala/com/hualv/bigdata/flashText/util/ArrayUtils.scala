@@ -1,10 +1,5 @@
 package com.hualv.bigdata.flashText.util
 
-
-import java.util
-
-import com.hualv.bigdata.flashText.Dictionary
-
 /**
   * Created by:
   * User: liuzhao

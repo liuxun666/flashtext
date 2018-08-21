@@ -6,7 +6,7 @@ package com.hualv.bigdata.flashText
   * Date: 2018/7/26
   * Email: liuzhao@66law.cn
   */
-class Hit extends Comparable[Hit]{
+class Hit[T] extends Comparable[Hit[T]]{
   //Hit不匹配
   private val UNMATCH = 0x00000000
   //Hit完全匹配
@@ -17,7 +17,7 @@ class Hit extends Comparable[Hit]{
   private var hitState = UNMATCH
 
   //  //记录词典匹配过程中，当前匹配到的词典分支节点
-  private var matchedDictSegment: Dictionary = null
+  private var matchedDictSegment: Dictionary[T] = null
   private var begin = 0
   private var end = 0
 
@@ -50,9 +50,9 @@ class Hit extends Comparable[Hit]{
     this.hitState = UNMATCH
   }
 
-  def getMatchedDictSegment: Dictionary = matchedDictSegment
+  def getMatchedDictSegment: Dictionary[T] = matchedDictSegment
 
-  def setMatchedDictSegment(matchedDictSegment: Dictionary): Unit = {
+  def setMatchedDictSegment(matchedDictSegment: Dictionary[T]): Unit = {
     this.matchedDictSegment = matchedDictSegment
   }
 
@@ -68,7 +68,7 @@ class Hit extends Comparable[Hit]{
     this.end = end
   }
 
-  override def compareTo(hit: Hit): Int = {
+  override def compareTo(hit: Hit[T]): Int = {
     var tmp = this.hitState - hit.hitState
     if (tmp == 0) {
       tmp = this.getBegin - hit.getBegin

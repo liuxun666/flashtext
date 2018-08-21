@@ -12,15 +12,16 @@ import scala.collection.mutable.ArrayBuffer
   * Date: 2018/7/26
   * Email: liuzhao@66law.cn
   */
-case class Dictionary(private var nodeChar: Char = '0') extends Comparable[Dictionary] with Ordered[Dictionary]{
+case class Dictionary[T](private var nodeChar: Char = '0') extends Comparable[Dictionary[T]] with Ordered[Dictionary[T]]{
   //公用字典表，存储汉字
-  private val charMap = new ConcurrentHashMap[Character, Character](16, 0.95f)
+//  private val charMap = new ConcurrentHashMap[Character, T](16, 0.95f)
+  private val charMap = mutable.HashMap[Character, T]()
   //数组大小上限
   private val ARRAY_LENGTH_LIMIT = 3
   //数组方式存储结构
-  private var childrenArray: mutable.ArrayBuffer[Dictionary] = _
+  private var childrenArray: mutable.ArrayBuffer[Dictionary[T]] = _
   //Map存储结构
-  private var childrenMap: ConcurrentHashMap[Character, Dictionary] = _
+  private var childrenMap: ConcurrentHashMap[Character, Dictionary[T]] = _
   //当前节点存储的Segment数目
   //storeSize <=ARRAY_LENGTH_LIMIT ，使用数组存储， storeSize >ARRAY_LENGTH_LIMIT ,则使用Map存储
   private var storeSize = 0
@@ -31,13 +32,15 @@ case class Dictionary(private var nodeChar: Char = '0') extends Comparable[Dicti
 
   private def hasNextNode() = this.storeSize > 0
 
+  def getValue() = this.charMap(getNodeChar)
+
   /**
     *
     * @param charArray
     * @param begin
     * @return
     */
-  def `match`(charArray: Array[Char], begin: Int): Hit = `match`(charArray, begin, null)
+  def `match`(charArray: Array[Char], begin: Int): Hit[T] = `match`(charArray, begin, null)
 
   /**
     * 匹配词段
@@ -47,11 +50,11 @@ case class Dictionary(private var nodeChar: Char = '0') extends Comparable[Dicti
     * @param searchHit
     * @return Hit
     */
-  def `match`(charArray: Array[Char], begin: Int, searchHit: Hit): Hit = {
+  def `match`(charArray: Array[Char], begin: Int, searchHit: Hit[T]): Hit[T] = {
     var _searchHit = searchHit
     //如果hit为空，新建
     if (_searchHit == null) {
-      _searchHit = new Hit
+      _searchHit = new Hit[T]
       //设置hit的起始文本位置
       _searchHit.setBegin(begin)
     }else{
@@ -62,13 +65,13 @@ case class Dictionary(private var nodeChar: Char = '0') extends Comparable[Dicti
     _searchHit.setEnd(begin)
     val keyChar = charArray(begin)
 
-    var ds: Dictionary = null
+    var ds: Dictionary[T] = null
     //引用实例变量为本地变量，避免查询时遇到更新的同步问题
     val dss = this.childrenArray
     val dictMap = this.childrenMap
     if(dss != null){
       //在数组中查找
-      val  keyDict = Dictionary(keyChar)
+      val  keyDict = Dictionary[T](keyChar)
       val  position = ArrayUtils.binarySearch(dss,  keyDict)
       if(position >= 0){
         ds = dss(position)
@@ -82,6 +85,7 @@ case class Dictionary(private var nodeChar: Char = '0') extends Comparable[Dicti
       if(ds.nodeState){
         //添加HIT状态为完全匹配
         _searchHit.setMatch()
+        _searchHit.setMatchedDictSegment(ds)
       }
       if(ds.hasNextNode()){
         //添加HIT状态为前缀匹配
@@ -98,42 +102,46 @@ case class Dictionary(private var nodeChar: Char = '0') extends Comparable[Dicti
     *
     * @param word
     */
-  def addWord(word: String): Unit = addWord(word.toCharArray, 0, word.length)
+  def addWord(word: String): Unit = addWord(word.toCharArray, null.asInstanceOf[T], 0, word.length)
+
+  def addWord(words: Map[String, T]): Unit = {
+    words.foreach(f => addWord(f._1.toCharArray, f._2, 0, f._1.length))
+  }
 
   /**
     * 禁用一个词
     * @param word
     */
-  def disableWord(word: String): Unit = addWord(word.toCharArray, 0, word.length , false)
+  def disableWord(word: String): Unit = addWord(word.toCharArray, null.asInstanceOf[T], 0, word.length , false)
+
 
   /**
     * 加载填充词典片段
     *
-    * @param charArray
+    * @param word
     * @param begin
     * @param length
     * @param state
     */
-  private def addWord(charArray: Array[Char], begin: Int, length: Int, state: Boolean = true): Unit = {
+  private def addWord(word: Array[Char], value: T, begin: Int, length: Int, state: Boolean = true): Unit = {
     //获取字典表中的汉字对象
-    val beginChar = charArray(begin)
-    var keyChar = charMap.get(beginChar)
-    //字典中没有该字，则将其添加入字典
-    if (keyChar == null) {
-      charMap.put(beginChar, beginChar)
-      keyChar = beginChar
+    val beginChar = word(begin)
+    if(!charMap.contains(beginChar)){
+      //字典中没有该字，则将其添加入字典
+      charMap.put(beginChar, null.asInstanceOf[T])
     }
     //搜索当前节点的存储，查询对应keyChar的ds，如果没有则创建
-    val ds = lookforDict(keyChar)
+    val ds = lookforDict(beginChar)
     if(ds != null){
       //处理keyChar对应的segment
       if(length > 1){
         //词还没有完全加入词典树
-        ds.addWord(charArray, begin + 1, length - 1, state)
+        ds.addWord(word, value, begin + 1, length - 1, state)
       }else if (length == 1){
         //已经是词的最后一个char,设置当前节点状态为true，
         //true表明一个完整的词，false表示从词典中屏蔽当前词
         ds.nodeState = state
+        ds.charMap.put(beginChar, value)
       }
     }
 
@@ -146,11 +154,11 @@ case class Dictionary(private var nodeChar: Char = '0') extends Comparable[Dicti
     * @return
     */
   private def lookforDict(keyChar: Character) = {
-    var ds: Dictionary = null
+    var ds: Dictionary[T] = null
 
     if(this.storeSize <= ARRAY_LENGTH_LIMIT){
       var dss = getChildrenArray()
-      val keyDict = Dictionary(keyChar)
+      val keyDict = Dictionary[T](keyChar)
       val position = ArrayUtils.binarySearch(dss, keyDict)
       if(position >= 0){
         ds = dss(position)
@@ -201,7 +209,7 @@ case class Dictionary(private var nodeChar: Char = '0') extends Comparable[Dicti
   private def getChildrenArray() = {
     this.synchronized{
       if(this.childrenArray == null){
-        this.childrenArray = ArrayBuffer[Dictionary]()
+        this.childrenArray = ArrayBuffer[Dictionary[T]]()
       }
     }
     this.childrenArray
@@ -213,7 +221,7 @@ case class Dictionary(private var nodeChar: Char = '0') extends Comparable[Dicti
     */
   private def getChildrenMap() = {
     this synchronized {
-      if (childrenMap == null) childrenMap = new ConcurrentHashMap[Character, Dictionary](6, 0.8f)
+      if (childrenMap == null) childrenMap = new ConcurrentHashMap[Character, Dictionary[T]](6, 0.8f)
     }
     childrenMap
   }
@@ -224,7 +232,7 @@ case class Dictionary(private var nodeChar: Char = '0') extends Comparable[Dicti
     * @param o
     * @return int
     */
-  override def compareTo(o: Dictionary): Int = {
+  override def compareTo(o: Dictionary[T]): Int = {
     if(this == null){
       -1
     }else if(o == null){
@@ -236,10 +244,10 @@ case class Dictionary(private var nodeChar: Char = '0') extends Comparable[Dicti
 
   }
 
-  override def compare(that: Dictionary): Int = compareTo(that)
+  override def compare(that: Dictionary[T]): Int = compareTo(that)
 
   override def equals(o: scala.Any): Boolean = o match {
-    case segment: Dictionary => compare(segment) == 0
+    case segment: Dictionary[T] => compare(segment) == 0
     case _ => false
   }
 }
