@@ -1,7 +1,10 @@
 package com.hualv.bigdata
 
+import java.net.InetAddress
+
 import com.hualv.bigdata.flashText.Analyzer
 import com.hualv.bigdata.flashText.util.DictUtils
+import sun.net.spi.nameservice.dns.DNSNameService
 
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
@@ -14,9 +17,11 @@ import scala.collection.mutable.ArrayBuffer
   */
 object test {
   def main(args: Array[String]): Unit = {
-    val keywords = getMap()
-    val dict = DictUtils.loadDict[Int](keywords)
-    Analyzer.analyze("泡泡泡怎么办法离婚", dict).foreach(f => println(f))
+//    val keywords = getMap()
+//    val dict = DictUtils.loadDict[Int](keywords)
+//    Analyzer.analyze("泡泡泡怎么办法离婚", dict).foreach(f => println(f))
+    val host = InetAddress.getByName("123.125.71.98")
+    println(new DNSNameService().getHostByAddr(Array[Byte](123, 125, 71, 98)))
   }
 
   def getArray() = {
