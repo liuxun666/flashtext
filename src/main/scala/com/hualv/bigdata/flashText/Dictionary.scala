@@ -85,6 +85,7 @@ case class Dictionary[T](private var nodeChar: Char = '0') extends Comparable[Di
       if(ds.nodeState){
         //添加HIT状态为完全匹配
         _searchHit.setMatch()
+        //记录当前位置的DictSegment
         _searchHit.setMatchedDictSegment(ds)
       }
       if(ds.hasNextNode()){
