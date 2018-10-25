@@ -86,20 +86,20 @@ case class Dictionary[T](private var nodeChar: Char = '0') extends Comparable[Di
         //添加HIT状态为完全匹配
         _searchHit.setMatch()
         //记录当前位置的DictSegment
-        _searchHit.setMatchedDictSegment(ds)
+        _searchHit.setMatchedDictionary(ds)
       }
       if(ds.hasNextNode()){
         //添加HIT状态为前缀匹配
         _searchHit.setPrefix()
         //记录当前位置的DictSegment
-        _searchHit.setMatchedDictSegment(ds)
+        _searchHit.setMatchedDictionary(ds)
       }
     }
     _searchHit
   }
 
   /**
-    * 加载填充词典片段
+    * 加载词典
     *
     * @param word
     */
@@ -117,7 +117,7 @@ case class Dictionary[T](private var nodeChar: Char = '0') extends Comparable[Di
 
 
   /**
-    * 加载填充词典片段
+    * 加载词典
     *
     * @param word
     * @param begin
@@ -125,7 +125,7 @@ case class Dictionary[T](private var nodeChar: Char = '0') extends Comparable[Di
     * @param state
     */
   private def addWord(word: Array[Char], value: T, begin: Int, length: Int, state: Boolean = true): Unit = {
-    //获取字典表中的汉字对象
+    //获取字典表中的词语对象
     val beginChar = word(begin)
     if(!charMap.contains(beginChar)){
       //字典中没有该字，则将其添加入字典

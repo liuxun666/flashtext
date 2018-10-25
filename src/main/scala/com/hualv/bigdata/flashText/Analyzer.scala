@@ -34,9 +34,9 @@ object Analyzer {
       while (hits.nonEmpty){
         hit = hits.remove(0)
         if(hit.getEnd < charArray.length - 1){
-          hit = hit.getMatchedDictSegment.`match`(charArray, hit.getEnd + 1, hit)
+          hit = hit.getMatchedDictionary.`match`(charArray, hit.getEnd + 1, hit)
           if(hit.isMatch){
-            val w = Word(charArray.slice(hit.getBegin, hit.getEnd + 1).mkString, hit.getBegin, hit.getEnd + 1, hit.getMatchedDictSegment.getValue())
+            val w = Word(charArray.slice(hit.getBegin, hit.getEnd + 1).mkString, hit.getBegin, hit.getEnd + 1, hit.getMatchedDictionary.getValue())
             //如果智能匹配，并且当前词和上一个词重叠了，比较两个词的大小再决定取哪一个
             if(isSmart){
               if(words.isEmpty){
@@ -67,7 +67,7 @@ object Analyzer {
       //当前没有前缀匹配时，重新匹配
       hit = dictionary.`match`(charArray, cursor)
       if(hit.isMatch){
-        val w = Word(charArray.slice(hit.getBegin, hit.getEnd + 1).mkString, hit.getBegin, hit.getEnd + 1, hit.getMatchedDictSegment.getValue())
+        val w = Word(charArray.slice(hit.getBegin, hit.getEnd + 1).mkString, hit.getBegin, hit.getEnd + 1, hit.getMatchedDictionary.getValue())
         if(isSmart){
           if(words.isEmpty){
             words += w

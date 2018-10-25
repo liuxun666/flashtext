@@ -17,7 +17,7 @@ class Hit[T] extends Comparable[Hit[T]]{
   private var hitState = UNMATCH
 
   //  //记录词典匹配过程中，当前匹配到的词典分支节点
-  private var matchedDictSegment: Dictionary[T] = null
+  private var matchedDictionary: Dictionary[T] = _
   private var begin = 0
   private var end = 0
 
@@ -50,10 +50,10 @@ class Hit[T] extends Comparable[Hit[T]]{
     this.hitState = UNMATCH
   }
 
-  def getMatchedDictSegment: Dictionary[T] = matchedDictSegment
+  def getMatchedDictionary: Dictionary[T] = matchedDictionary
 
-  def setMatchedDictSegment(matchedDictSegment: Dictionary[T]): Unit = {
-    this.matchedDictSegment = matchedDictSegment
+  def setMatchedDictionary(matchedDictionary: Dictionary[T]): Unit = {
+    this.matchedDictionary = matchedDictionary
   }
 
   def getBegin: Int = begin
