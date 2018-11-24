@@ -1,5 +1,7 @@
 package com.hualv.bigdata.flashText
 
+import com.hualv.bigdata.flashText.util.Compare
+
 import scala.collection.mutable
 
 /**
@@ -21,9 +23,10 @@ object Analyzer {
     * @param text 需要查找的文本
     * @param dictionary 词典
     * @param isSmart 是否智能匹配(默认：true)，true: 按起始位置和长度优先返回结果，不允许词之间重叠，false：返回最细粒度的结果
+    * @param compareType 枚举类
     * @return
     */
-  def analyze[T](text: String, dictionary: Dictionary[T], isSmart: Boolean = false): Array[Word] = {
+  def analyze[T](text: String, dictionary: Dictionary[T], isSmart: Boolean = false)(implicit compareFunc: (Word, Word) => Int = Compare.BEGINFIRST): Array[Word] = {
     val charArray = text.toCharArray
     var cursor = 0
     val words = mutable.ArrayBuffer[Word]()
@@ -43,9 +46,9 @@ object Analyzer {
                 words += w
               }else{
                 //当前词和上一个词重叠了
-                if(w.fullContain(words.last) || w.overlap(words.last)){
+                if(w.overlap(words.last)){
                   //当前词大于上一个词，把上一个词删去，将新词加入, 否则不加入当前匹配到的词
-                  if(w.compareTo(words.last) >= 0 ){
+                  if(w > words.last){
                     words.remove(words.length - 1)
                     words += w
                   }
@@ -73,9 +76,9 @@ object Analyzer {
             words += w
           }else{
             //当前词和上一个词重叠了
-            if(w.fullContain(words.last) || w.overlap(words.last)){
+            if(w.overlap(words.last)){
               //当前词大于上一个词，把上一个词删去，将新词加入
-              if(w.compareTo(words.last) >= 0 ){
+              if(w > words.last){
                 words.remove(words.length - 1)
                 words += w
               }
@@ -99,59 +102,9 @@ object Analyzer {
 
 }
 
- case class Word(word: String, begin: Int, end: Int, info: Any = null) extends Comparable[Word] {
+ case class Word(word: String, begin: Int, end: Int, info: Any = null)(implicit compareFunc: (Word, Word) => Int) extends Ordered[Word]{
   val length: Int = end - begin
-   //TODO allow custom compare func
-
-  override def compareTo(t: Word): Int = {
-    if(this.begin < t.begin) 1
-    else if(this.begin == t.begin){
-      if(this.end > t.end) 1
-      else if (this.end == t.end) 0
-      else -1
-    }else -1
-  }
-
-   /**
-     * 比较两个词：起始位置优先，再长度优先
-     * @param t
-     * @return
-     */
-  def beginFirst(t: Word): Int = {
-    if(this.begin < t.begin) 1
-    else if(this.begin == t.begin){
-      if(this.end > t.end) 1
-      else if (this.end == t.end) 0
-      else -1
-    }else -1
-  }
-
-   /**
-     * 比较两个词：结束位置优先，再长度优先
-     * @param t
-     * @return
-     */
-  def endFirst(t: Word): Int = {
-    if(this.end > t.end) 1
-    else if(this.end == t.end){
-      if(this.begin < t.begin) 1
-      else if( this.begin == this.begin) 0
-      else -1
-    }else -1
-  }
-
-   /**
-     * 比较两个词：长度优先，再起始位置优先
-     * @param t
-     * @return
-     */
-  def lengthFirst(t: Word): Int = {
-    if(this.fullContain(t) || this.overlap(t)){
-      //重叠
-      this.length.compareTo(t.length)
-    }else this.begin.compareTo(t.begin)
-  }
-
+  def compare(t: Word): Int = compareFunc(this, t)
   override def equals(o: scala.Any): Boolean = {
     if(canEqual(o)){
       val _o = o.asInstanceOf[Word]
@@ -166,11 +119,8 @@ object Analyzer {
 
   override def canEqual(that: Any): Boolean = that.isInstanceOf[Word]
 
-  def fullContain(that: Word) = {
+  def overlap(that: Word) = {
     this.begin <= that.begin && this.end >= that.end
   }
 
-  def overlap(that: Word) = {
-    this.begin < that.end && this.end >= that.end
-  }
-}
+ }

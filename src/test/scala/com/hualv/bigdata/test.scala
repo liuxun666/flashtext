@@ -2,7 +2,7 @@ package com.hualv.bigdata
 
 
 import com.hualv.bigdata.flashText.Analyzer
-import com.hualv.bigdata.flashText.util.DictUtils
+import com.hualv.bigdata.flashText.util.{Compare, DictUtils}
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -16,7 +16,7 @@ object test {
   def main(args: Array[String]): Unit = {
     val keywords = getArray()
     val dict = DictUtils.loadDict(keywords)
-    Analyzer.analyze("泡泡泡怎么办法离婚", dict).foreach(f => println(f))
+    Analyzer.analyze("泡泡泡怎么办法离婚", dict)(Compare.ENDFIRST).foreach(f => println(f))
   }
 
   def getArray() = {
