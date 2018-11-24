@@ -10,7 +10,7 @@ import com.hualv.bigdata.flashText.Dictionary
   */
 object DictUtils {
 
-  def loadDict(words: Seq[String]) = {
+  def loadDict(words: Array[String]) = {
     val dic = Dictionary(0.toChar)
     words.filter(!_.isEmpty).foreach(word => dic.addWord(word.trim))
     dic
