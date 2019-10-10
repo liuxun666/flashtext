@@ -28,6 +28,10 @@ case class Dictionary[T](private var nodeChar: Char = '0') extends Comparable[Di
   //当前Dict状态，表示从根节点到当前节点的路径表示一个完整的词
   private var nodeState: Boolean = _
 
+  this() = {
+    this('0')
+  }
+
   private def getNodeChar: Character = this.nodeChar
 
   private def hasNextNode() = this.storeSize > 0
