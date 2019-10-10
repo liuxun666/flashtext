@@ -15,7 +15,7 @@ import scala.collection.mutable.ArrayBuffer
 object test {
   def main(args: Array[String]): Unit = {
     val keywords = getArray()
-    val dict = DictUtils.loadDict(keywords)
+    val dict = DictUtils.loadDict(keywords.toArray)
     Analyzer.analyze("泡泡泡怎么办法离婚", dict)(Compare.ENDFIRST).foreach(f => println(f))
   }
 
