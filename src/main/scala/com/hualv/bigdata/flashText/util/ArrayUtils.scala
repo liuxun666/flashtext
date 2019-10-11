@@ -7,7 +7,7 @@ package com.hualv.bigdata.flashText.util
   * Email: liuzhao@66law.cn
   */
 object ArrayUtils {
-  def binarySearch[T](array: Seq[T], value: T )(implicit ordering: Ordering[T]): Int = {
+  def binarySearch[T](array: scala.collection.Seq[T], value: T )(implicit ordering: Ordering[T]): Int = {
     var left: Int = 0
     var right: Int = array.length - 1
     while (left <= right) {
