@@ -33,7 +33,7 @@ public class testJava {
         DictUtils.loadDict(strings);
         Dictionary<Integer> dict1 = DictUtils.loadDict(map);
         // 控制优先级的方法
-        Word<Integer>[] words = Analyzer.analyze("明天飞北京", dict1, true, Compare::BEGINFIRST);
+        Word<Integer>[] words = Analyzer.analyze("明天飞北京", dict1, true, (w1, w2) -> w1.end()-w2.end());
         for (Word<Integer> word : words) {
             System.out.println(word.info());
         }
