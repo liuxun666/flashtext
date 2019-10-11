@@ -12,6 +12,7 @@ import scala.collection.mutable
   */
 object Analyzer {
 
+
   /**
     * 查找一段为了本包含词典中哪些词，以及位置信息<br>
     *   eg:<br>
@@ -23,13 +24,14 @@ object Analyzer {
     * @param text 需要查找的文本
     * @param dictionary 词典
     * @param isSmart 是否智能匹配(默认：true)，true: 按起始位置和长度优先返回结果，不允许词之间重叠，false：返回最细粒度的结果
-    * @param compareType 枚举类
+    * @param compareFunc 处理优先级的函数，默认是起始位置优先
     * @return
     */
-  def analyze[T](text: String, dictionary: Dictionary[T], isSmart: Boolean = false)(implicit compareFunc: (Word, Word) => Int = Compare.BEGINFIRST): Array[Word] = {
+  def analyze[T](text: String, dictionary: Dictionary[T], isSmart: Boolean = false, compareFunc: (Word[T], Word[T]) => Integer = Compare.BEGINFIRST _): Array[Word[T]] = {
+    implicit val aa =  compareFunc
     val charArray = text.toCharArray
     var cursor = 0
-    val words = mutable.ArrayBuffer[Word]()
+    val words = mutable.ArrayBuffer[Word[T]]()
     val hits = mutable.Buffer[Hit[T]]()
     var hit: Hit[T] = null
     while (cursor < charArray.length){
@@ -100,14 +102,18 @@ object Analyzer {
     words.toArray
   }
 
+  def analyze[T](text: String, dictionary: Dictionary[T], isSmart: Boolean): Array[Word[T]] ={
+    analyze(text, dictionary, isSmart, Compare.BEGINFIRST)
+  }
+
 }
 
- case class Word(word: String, begin: Int, end: Int, info: Any = null)(implicit compareFunc: (Word, Word) => Int) extends Ordered[Word]{
+ case class Word[T](word: String, begin: Int, end: Int, info: T = null)(implicit compareFunc: (Word[T], Word[T]) => Integer) extends Ordered[Word[T]]{
   val length: Int = end - begin
-  def compare(t: Word): Int = compareFunc(this, t)
+  def compare(t: Word[T]): Int = compareFunc(this, t)
   override def equals(o: scala.Any): Boolean = {
     if(canEqual(o)){
-      val _o = o.asInstanceOf[Word]
+      val _o = o.asInstanceOf[Word[T]]
       if(_o == null) false
       else if(this == _o) true
       else if(this.begin == _o.begin && this.end == _o.end) true
@@ -115,12 +121,15 @@ object Analyzer {
     } else false
   }
 
+
   override def hashCode(): Int = (begin * 37) + (end * 31) + ((begin * end) % (end - begin + 1)) * 11
 
-  override def canEqual(that: Any): Boolean = that.isInstanceOf[Word]
+  override def canEqual(that: Any): Boolean = that.isInstanceOf[Word[T]]
 
-  def overlap(that: Word) = {
-    this.begin <= that.begin && this.end >= that.end
+  def overlap(that: Word[T]) = {
+    this.begin < that.end && this.end > that.begin
+//    this.end > that.begin || this.begin < that.end
+//    this.begin <= that.begin && this.end >= that.end
   }
 
  }
