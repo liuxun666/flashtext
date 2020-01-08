@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.hualv.bigdata</groupId>
   <artifactId>flashtext</artifactId>
-  <version>1.4.7</version>
+  <version>1.4.8</version>
   <packaging>jar</packaging>
   <properties>
     <scala.version>2.13.1</scala.version>

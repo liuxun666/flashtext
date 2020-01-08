@@ -106,6 +106,10 @@ object Analyzer {
     analyze(text, dictionary, isSmart, Compare.BEGINFIRST)
   }
 
+  def analyze[T](text: String, dictionary: Dictionary[T]): Array[Word[T]] ={
+    analyze(text, dictionary, true, Compare.BEGINFIRST)
+  }
+
 }
 
  case class Word[T](word: String, begin: Int, end: Int, info: T = null)(implicit compareFunc: (Word[T], Word[T]) => Integer) extends Ordered[Word[T]]{

@@ -20,7 +20,7 @@ import java.util.Map;
  **/
 public class testJava {
     public static void main(String[] args) {
-        String[] keywords = new String[]{"拒绝", "办法", "怎么办", "么办法", "怎么", "离婚"};
+        String[] keywords = new String[]{"", "办法", "怎么办", "么办法", "怎么", "离婚"};
         List<String> strings = Arrays.asList(keywords);
         Dictionary dict = DictUtils.loadDict(keywords);
         Word[] finded = Analyzer.analyze("怎么办法离婚", dict, true, Compare::BEGINFIRST);

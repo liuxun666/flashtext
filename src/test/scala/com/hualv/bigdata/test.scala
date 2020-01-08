@@ -20,7 +20,7 @@ object test {
   }
 
   def getArray() = {
-    ArrayBuffer("拒绝", "见" ,"办法" ,"怎么办","么办法" ,"怎么" ,"离婚")
+    ArrayBuffer("拒绝", "" ,"办法" ,"怎么办","么办法" ,"怎么" ,"离婚")
   }
 
   def getMap() = {

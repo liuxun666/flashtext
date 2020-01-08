@@ -1,9 +1,9 @@
 package com.hualv.bigdata.flashText.util
 
 import java.util
+import java.util.function.Consumer
 
 import com.hualv.bigdata.flashText.Dictionary
-import scala.jdk.CollectionConverters._
 
 
 /**
@@ -22,7 +22,9 @@ object DictUtils {
 
   def loadDict(words: util.List[String]) = {
     val dic = Dictionary[Null](0.toChar)
-    words.asScala.filter(!_.isEmpty).foreach(word => dic.addWord(word.trim))
+    words.forEach(new Consumer[String] {
+      override def accept(t: String): Unit = dic.addWord(t.trim)
+    })
     dic
   }
 
@@ -34,7 +36,7 @@ object DictUtils {
 
   def loadDict[T](words: util.Map[String, T]) = {
     val dic = Dictionary[T](0.toChar)
-    dic.addWord(words.asScala.toMap)
+    dic.addWord(words)
     dic
   }
 

@@ -1,6 +1,8 @@
 package com.hualv.bigdata.flashText
 
+import java.util.Map.Entry
 import java.util.concurrent.ConcurrentHashMap
+import java.util.function.Consumer
 
 import com.hualv.bigdata.flashText.util.ArrayUtils
 
@@ -109,12 +111,21 @@ case class Dictionary[T](private var nodeChar: Char = '0') extends Comparable[Di
     words.foreach(f => addWord(f._1.toCharArray, f._2, 0, f._1.length))
   }
 
+  def addWord(words: java.util.Map[String, T]): Unit = {
+    words.entrySet().forEach(new Consumer[Entry[String, T]](){
+      override def accept(e: Entry[String, T]): Unit = addWord(e.getKey.toCharArray, e.getValue, 0, e.getKey.length)
+    })
+  }
+
   /**
     * 禁用一个词
     * @param word
     */
   def disableWord(word: String): Unit = addWord(word.toCharArray, null.asInstanceOf[T], 0, word.length , false)
 
+  private def addWord(word: String, value: T): Unit = {
+    addWord(word.toCharArray, value, 0, word.length)
+  }
 
   /**
     * 加载词典
@@ -125,6 +136,7 @@ case class Dictionary[T](private var nodeChar: Char = '0') extends Comparable[Di
     * @param state
     */
   private def addWord(word: Array[Char], value: T, begin: Int, length: Int, state: Boolean = true): Unit = {
+    if(word.isEmpty) return
     //获取字典表中的词语对象
     val beginChar = word(begin)
     if(!charMap.contains(beginChar)){
