@@ -9,14 +9,15 @@ import com.hualv.bigdata.flashText.Word
   * Email: liuzhao@66law.cn
   */
 
-object Compare extends {
+object Compare {
+
   /**
     * 比较两个词：长度优先，再起始位置优先
     *
     * @param t
     * @return
     */
-  def LENGTHFIRST[T](t: Word[T], t1: Word[T]): Integer = {
+  private def lengthFirst(t: Word[_], t1: Word[_]): Int = {
     if (t.overlap(t1)) {
       //重叠
       t.length.compareTo(t1.length)
@@ -29,7 +30,7 @@ object Compare extends {
     * @param t
     * @return
     */
-  def ENDFIRST[T](t: Word[T], t1: Word[T]): Integer = {
+  private def endFirst(t: Word[_], t1: Word[_]): Int = {
     if (t.end > t1.end) 1
     else if (t.end == t1.end) {
       if (t.begin < t1.begin) 1
@@ -44,7 +45,7 @@ object Compare extends {
     * @param t
     * @return
     */
-  def BEGINFIRST[T](t: Word[T], t1: Word[T]): Integer = {
+  private def beginFirst(t: Word[_], t1: Word[_]): Int = {
     if (t.begin < t1.begin) 1
     else if (t.begin == t1.begin) {
       if (t.end > t1.end) 1
@@ -52,5 +53,7 @@ object Compare extends {
       else -1
     } else -1
   }
-
+  val BEGINFIRST: (Word[_], Word[_]) => Int = (v1: Word[_], v2: Word[_]) => beginFirst(v1, v2)
+  val LENGTHFIRST: (Word[_], Word[_]) => Int = (v1: Word[_], v2: Word[_]) => lengthFirst(v1, v2)
+  val ENDFIRST: (Word[_], Word[_]) => Int = (v1: Word[_], v2: Word[_]) => endFirst(v1, v2)
 }

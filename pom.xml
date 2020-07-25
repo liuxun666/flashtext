@@ -2,10 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.hualv.bigdata</groupId>
   <artifactId>flashtext</artifactId>
-  <version>1.4.8</version>
+  <version>1.4.9_2.11</version>
   <packaging>jar</packaging>
   <properties>
-    <scala.version>2.13.1</scala.version>
+    <scala.version>2.11.8</scala.version>
     <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
   </properties>
 

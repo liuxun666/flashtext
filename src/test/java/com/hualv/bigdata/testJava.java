@@ -23,7 +23,7 @@ public class testJava {
         String[] keywords = new String[]{"", "办法", "怎么办", "么办法", "怎么", "离婚"};
         List<String> strings = Arrays.asList(keywords);
         Dictionary dict = DictUtils.loadDict(keywords);
-        Word[] finded = Analyzer.analyze("怎么办法离婚", dict, true, Compare::BEGINFIRST);
+        Word[] finded = Analyzer.analyze("怎么办法离婚", dict, true, Compare.BEGINFIRST());
         for (Word word : finded) {
             System.out.println(word);
         }
@@ -34,6 +34,7 @@ public class testJava {
         Dictionary<Integer> dict1 = DictUtils.loadDict(map);
         // 控制优先级的方法
         Word<Integer>[] words = Analyzer.analyze("明天飞北京", dict1, true, (w1, w2) -> w1.end()-w2.end());
+
         for (Word<Integer> word : words) {
             System.out.println(word.info());
         }

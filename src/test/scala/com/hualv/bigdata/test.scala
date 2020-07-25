@@ -16,7 +16,8 @@ object test {
   def main(args: Array[String]): Unit = {
     val keywords = getMap()
     val dict = DictUtils.loadDict(keywords)
-    Analyzer.analyze("泡泡泡怎么办法离婚", dict, true, Compare.BEGINFIRST[Int] ).foreach(println)
+    Analyzer.analyze("泡泡泡怎么办法离婚", dict, true, Compare.BEGINFIRST).foreach(println)
+    Analyzer.analyze("泡泡泡怎么办法离婚", dict, true, (w1, w2) => w1.begin - w2.begin).foreach(println)
   }
 
   def getArray() = {
