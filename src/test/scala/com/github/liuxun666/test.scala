@@ -1,4 +1,4 @@
-package com.liuxun666
+package com.github.liuxun666
 
 import com.github.liuxun666.flashText.Analyzer
 import com.github.liuxun666.flashText.util.{Compare, DictUtils}
