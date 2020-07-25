@@ -10,17 +10,40 @@
   </properties>
 
   <name>com.github.liuxun666.flashText</name>
+  <description>fast keyword extract tool </description>
+  <url>https://github.com/liuxun666/flashtext</url>
+
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <tag>master</tag>
+    <url>git@github.com:liuxun666/flashtext.git</url>
+    <connection>scm:git:git@github.com:liuxun666/flashtext.git</connection>
+    <developerConnection>scm:git:git@github.com:liuxun666/flashtext.git</developerConnection>
+  </scm>
+  <issueManagement>
+    <system>Github Issue</system>
+    <url>https://github.com/liuxun666/flashtext/issues</url>
+  </issueManagement>
+  <developers>
+    <developer>
+      <name>liuxun666</name>
+      <email>liuzhao@66law.cn</email>
+      <organization>66law</organization>
+    </developer>
+  </developers>
 
 
-  <distributionManagement>
-    <repository>
-      <id>central</id>
-      <name>maven</name>
-      <url>http://repo.66law.cn/artifactory/maven</url>
-    </repository>
-  </distributionManagement>
-
-
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
 
   <pluginRepositories>
     <pluginRepository>
