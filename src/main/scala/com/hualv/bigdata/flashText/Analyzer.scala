@@ -29,7 +29,7 @@ object Analyzer {
     * @param compareFunc 处理优先级的函数，默认是起始位置优先
     * @return
     */
-  def analyze[T](text: String, dictionary: Dictionary[T], isSmart: Boolean,  compareFunc: (Word[_], Word[_]) => Int): Array[Word[T]] = {
+  def analyze[T](text: String, dictionary: Dictionary[T], isSmart: Boolean, compareFunc: (Word[_], Word[_]) => Int): Array[Word[T]] = {
     implicit val aa = compareFunc
     val charArray = text.toCharArray
     var cursor = 0
@@ -110,6 +110,10 @@ object Analyzer {
 
   def analyze[T](text: String, dictionary: Dictionary[T]): Array[Word[T]] = {
     analyze(text, dictionary, true, Compare.BEGINFIRST)
+  }
+
+  def analyze[T](text: String, dictionary: Dictionary[T], compareFunc: (Word[_], Word[_]) => Int): Array[Word[T]] = {
+    analyze(text, dictionary, true, compareFunc)
   }
 
   def analyze[T](text: String, dictionary: Dictionary[T], isSmart: Boolean, compareFunc: BiFunction[Word[_], Word[_], Int]): Array[Word[T]] = {
