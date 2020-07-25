@@ -3,6 +3,7 @@ package com.github.liuxun666.flashText.util
 import com.github.liuxun666.flashText.Word
 
 /**
+  * 优先级函数 <br>
   * Created by:
   * User: liuzhao
   * Date: 2018/8/15
@@ -14,8 +15,9 @@ object Compare {
   /**
     * 比较两个词：长度优先，再起始位置优先
     *
-    * @param t
-    * @return
+    * @param t 第一个Word
+    * @param t1 第二个Word
+    * @return int, when t > t1 then 1 .when t = t1 then 0. else -1
     */
   private def lengthFirst(t: Word[_], t1: Word[_]): Int = {
     if (t.overlap(t1)) {
@@ -28,6 +30,7 @@ object Compare {
     * 比较两个词：结束位置优先，再长度优先
     *
     * @param t
+    * @param t1
     * @return
     */
   private def endFirst(t: Word[_], t1: Word[_]): Int = {
@@ -43,6 +46,7 @@ object Compare {
     * 比较两个词：起始位置优先，再长度优先
     *
     * @param t
+    * @param t1
     * @return
     */
   private def beginFirst(t: Word[_], t1: Word[_]): Int = {

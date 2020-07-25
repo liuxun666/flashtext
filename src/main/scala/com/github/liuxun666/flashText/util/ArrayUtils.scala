@@ -1,6 +1,7 @@
 package com.github.liuxun666.flashText.util
 
 /**
+  * 数组工具类 <br>
   * Created by:
   * User: liuzhao
   * Date: 2018/7/26

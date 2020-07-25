@@ -7,6 +7,7 @@ import com.github.liuxun666.flashText.util.Compare
 import scala.collection.mutable
 
 /**
+  * 查找一段字符串中包含词典中的哪些词，以及位置信息 <br>
   * Created by:
   * User: liuzhao
   * Date: 2018/7/26
@@ -15,7 +16,7 @@ import scala.collection.mutable
 object Analyzer {
 
   /**
-    * 查找一段为了本包含词典中哪些词，以及位置信息<br>
+    * 查找一段字符串中包含词典中的哪些词，以及位置信息<br>
     * eg:<br>
     * val dict = DictUtils.loadDict(Seq("大家", "大家好"))<br>
     *   Analyzer.analyze("大家好", dict)) <br>
@@ -27,7 +28,7 @@ object Analyzer {
     * @param dictionary  词典
     * @param isSmart     是否智能匹配(默认：true)，true: 按起始位置和长度优先返回结果，不允许词之间重叠，false：返回最细粒度的结果
     * @param compareFunc 处理优先级的函数，默认是起始位置优先
-    * @return
+    * @return 找到的词语
     */
   def analyze[T](text: String, dictionary: Dictionary[T], isSmart: Boolean, compareFunc: (Word[_], Word[_]) => Int): Array[Word[T]] = {
     implicit val aa = compareFunc

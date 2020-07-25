@@ -8,6 +8,7 @@ import com.github.liuxun666.flashText.util.ArrayUtils
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 /**
+  * 字典类 <br>
   * Created by:
   * User: liuzhao
   * Date: 2018/7/26
@@ -37,9 +38,9 @@ case class Dictionary[T](private var nodeChar: Char = '0') extends Comparable[Di
 
   /**
     *
-    * @param charArray
-    * @param begin
-    * @return
+    * @param charArray 字符串
+    * @param begin 开始位置
+    * @return 匹配结果Hit
     */
   def `match`(charArray: Array[Char], begin: Int): Hit[T] = `match`(charArray, begin, null)
 

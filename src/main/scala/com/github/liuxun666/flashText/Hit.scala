@@ -1,6 +1,7 @@
 package com.github.liuxun666.flashText
 
 /**
+  * 存储匹配结果 <br>
   * Created by:
   * User: liuzhao
   * Date: 2018/7/26

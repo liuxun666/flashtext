@@ -40,3 +40,6 @@ Word<Integer>[] finded = Analyzer.analyze("明天飞北京", dict, true, Compare
 Word<Integer>[] finded = Analyzer.analyze("明天飞北京", dict, true, (w1, w2) -> w1.end() - w2.end());  
 
 ```
+
+deploy:
+mvn clean package net.alchim31.maven:scala-maven-plugin:4.0.2:doc-jar deploy -P sonatype-oss-release -f pom.xml

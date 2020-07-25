@@ -7,6 +7,7 @@ import com.github.liuxun666.flashText.Dictionary
 
 
 /**
+  * 字典工具类，方便创建字典 <br>
   * Created by:
   * User: liuzhao
   * Date: 2018/7/27
@@ -14,6 +15,11 @@ import com.github.liuxun666.flashText.Dictionary
   */
 object DictUtils {
 
+  /**
+    * 加载数组为词典
+    * @param words 数组
+    * @return Dictionary 字典
+    */
   def loadDict(words: Array[String]) = {
     val dic = Dictionary[Null](0.toChar)
     words.filter(!_.isEmpty).foreach(word => dic.addWord(word.trim))
