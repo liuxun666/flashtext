@@ -1,9 +1,9 @@
-package com.liuxun666.flashText
+package com.github.liuxun666.flashText
 
 import java.util.Map.Entry
 import java.util.function.Consumer
 
-import com.liuxun666.flashText.util.ArrayUtils
+import com.github.liuxun666.flashText.util.ArrayUtils
 
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer

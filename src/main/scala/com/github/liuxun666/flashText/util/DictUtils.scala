@@ -1,9 +1,9 @@
-package com.liuxun666.flashText.util
+package com.github.liuxun666.flashText.util
 
 import java.util
 import java.util.function.Consumer
 
-import com.liuxun666.flashText.Dictionary
+import com.github.liuxun666.flashText.Dictionary
 
 
 /**

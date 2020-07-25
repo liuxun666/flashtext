@@ -1,7 +1,7 @@
 package com.liuxun666
 
-import com.liuxun666.flashText.Analyzer
-import com.liuxun666.flashText.util.{Compare, DictUtils}
+import com.github.liuxun666.flashText.Analyzer
+import com.github.liuxun666.flashText.util.{Compare, DictUtils}
 
 import scala.collection.mutable.ArrayBuffer
 

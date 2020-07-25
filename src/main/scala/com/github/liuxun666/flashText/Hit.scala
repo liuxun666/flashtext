@@ -1,4 +1,4 @@
-package com.liuxun666.flashText
+package com.github.liuxun666.flashText
 
 /**
   * Created by:

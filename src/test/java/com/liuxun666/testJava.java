@@ -1,10 +1,10 @@
 package com.liuxun666;
 
-import com.liuxun666.flashText.Analyzer;
-import com.liuxun666.flashText.Dictionary;
-import com.liuxun666.flashText.Word;
-import com.liuxun666.flashText.util.Compare;
-import com.liuxun666.flashText.util.DictUtils;
+import com.github.liuxun666.flashText.Analyzer;
+import com.github.liuxun666.flashText.Dictionary;
+import com.github.liuxun666.flashText.Word;
+import com.github.liuxun666.flashText.util.Compare;
+import com.github.liuxun666.flashText.util.DictUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;

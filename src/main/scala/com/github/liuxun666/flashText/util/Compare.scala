@@ -1,6 +1,6 @@
-package com.liuxun666.flashText.util
+package com.github.liuxun666.flashText.util
 
-import com.liuxun666.flashText.Word
+import com.github.liuxun666.flashText.Word
 
 /**
   * Created by:

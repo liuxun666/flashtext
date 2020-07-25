@@ -5,7 +5,7 @@ scala version 2.11
 
 ```xml
 <dependency>
-  <groupId>com.liuxun666</groupId>
+  <groupId>com.github.liuxun666</groupId>
   <artifactId>flashtext</artifactId>
   <version>1.4.9_2.11</version>
 </dependency>
