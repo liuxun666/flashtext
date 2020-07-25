@@ -1,10 +1,10 @@
-package com.hualv.bigdata;
+package com.liuxun666;
 
-import com.hualv.bigdata.flashText.Analyzer;
-import com.hualv.bigdata.flashText.Dictionary;
-import com.hualv.bigdata.flashText.Word;
-import com.hualv.bigdata.flashText.util.Compare;
-import com.hualv.bigdata.flashText.util.DictUtils;
+import com.liuxun666.flashText.Analyzer;
+import com.liuxun666.flashText.Dictionary;
+import com.liuxun666.flashText.Word;
+import com.liuxun666.flashText.util.Compare;
+import com.liuxun666.flashText.util.DictUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.hualv.bigdata.flashText
+package com.liuxun666.flashText
 
 /**
   * Created by:

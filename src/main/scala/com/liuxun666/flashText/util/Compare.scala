@@ -1,6 +1,6 @@
-package com.hualv.bigdata.flashText.util
+package com.liuxun666.flashText.util
 
-import com.hualv.bigdata.flashText.Word
+import com.liuxun666.flashText.Word
 
 /**
   * Created by:

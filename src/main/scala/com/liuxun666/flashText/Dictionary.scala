@@ -1,10 +1,9 @@
-package com.hualv.bigdata.flashText
+package com.liuxun666.flashText
 
 import java.util.Map.Entry
-import java.util.concurrent.ConcurrentHashMap
 import java.util.function.Consumer
 
-import com.hualv.bigdata.flashText.util.ArrayUtils
+import com.liuxun666.flashText.util.ArrayUtils
 
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
@@ -23,7 +22,7 @@ case class Dictionary[T](private var nodeChar: Char = '0') extends Comparable[Di
   //数组方式存储结构
   private var childrenArray: mutable.ArrayBuffer[Dictionary[T]] = _
   //Map存储结构
-  private var childrenMap: ConcurrentHashMap[Character, Dictionary[T]] = _
+  private var childrenMap: mutable.HashMap[Character, Dictionary[T]] = _
   //当前节点存储的Segment数目
   //storeSize <=ARRAY_LENGTH_LIMIT ，使用数组存储， storeSize >ARRAY_LENGTH_LIMIT ,则使用Map存储
   private var storeSize = 0
@@ -79,7 +78,8 @@ case class Dictionary[T](private var nodeChar: Char = '0') extends Comparable[Di
         ds = dss(position)
       }
     }else if(dictMap != null){
-      ds = dictMap.get(keyChar)
+      val optionDs = dictMap.get(keyChar)
+      if(optionDs.isDefined) ds = optionDs.get
     }
     //找到DictSegment，判断词的匹配状态
     if(ds != null){
@@ -202,8 +202,8 @@ case class Dictionary[T](private var nodeChar: Char = '0') extends Comparable[Di
       //获取Map容器，如果Map未创建,则创建Map
       val segmentMap = getChildrenMap()
       //搜索Map
-      ds = segmentMap.get(keyChar)
-      if(ds == null){
+      val optionDs = segmentMap.get(keyChar)
+      if(optionDs.isDefined){
         //构造新的segment
         ds = Dictionary(keyChar)
         segmentMap.put(keyChar , ds)
@@ -234,7 +234,7 @@ case class Dictionary[T](private var nodeChar: Char = '0') extends Comparable[Di
     */
   private def getChildrenMap() = {
     this synchronized {
-      if (childrenMap == null) childrenMap = new ConcurrentHashMap[Character, Dictionary[T]](6, 0.8f)
+      if (childrenMap == null) childrenMap = new mutable.HashMap[Character, Dictionary[T]]()
     }
     childrenMap
   }

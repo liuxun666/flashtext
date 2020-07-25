@@ -3,6 +3,14 @@ flashtext find keyword in text
 
 scala version 2.11
 
+```xml
+<dependency>
+  <groupId>com.liuxun666</groupId>
+  <artifactId>flashtext</artifactId>
+  <version>1.4.9_2.11</version>
+</dependency>
+```
+
 ## scala :
 ```scala
 val keywords = Array("拒绝","办法" ,"怎么办","么办法" ,"怎么" ,"离婚")

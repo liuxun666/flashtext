@@ -1,8 +1,7 @@
-package com.hualv.bigdata
+package com.liuxun666
 
-
-import com.hualv.bigdata.flashText.Analyzer
-import com.hualv.bigdata.flashText.util.{Compare, DictUtils}
+import com.liuxun666.flashText.Analyzer
+import com.liuxun666.flashText.util.{Compare, DictUtils}
 
 import scala.collection.mutable.ArrayBuffer
 

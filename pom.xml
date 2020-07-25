@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.hualv.bigdata</groupId>
+  <groupId>com.liuxun666</groupId>
   <artifactId>flashtext</artifactId>
   <version>1.4.9_2.11</version>
   <packaging>jar</packaging>
@@ -9,8 +9,7 @@
     <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
   </properties>
 
-  <name>com.hualv.bigdata.flashText</name>
-  <url>http://www.66law.cn</url>
+  <name>com.liuxun666.flashText</name>
 
 
   <distributionManagement>
@@ -32,6 +31,11 @@
   </pluginRepositories>
 
   <dependencies>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>${scala.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -66,5 +70,4 @@
       </plugin>
     </plugins>
   </build>
-
 </project>

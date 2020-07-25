@@ -1,8 +1,8 @@
-package com.hualv.bigdata.flashText
+package com.liuxun666.flashText
 
 import java.util.function.BiFunction
 
-import com.hualv.bigdata.flashText.util.Compare
+import com.liuxun666.flashText.util.Compare
 
 import scala.collection.mutable
 

@@ -1,9 +1,9 @@
-package com.hualv.bigdata.flashText.util
+package com.liuxun666.flashText.util
 
 import java.util
 import java.util.function.Consumer
 
-import com.hualv.bigdata.flashText.Dictionary
+import com.liuxun666.flashText.Dictionary
 
 
 /**
