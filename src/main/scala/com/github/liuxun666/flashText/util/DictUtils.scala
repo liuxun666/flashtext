@@ -5,6 +5,8 @@ import java.util.function.Consumer
 
 import com.github.liuxun666.flashText.Dictionary
 
+import scala.collection.Iterable
+
 
 /**
   * 字典工具类，方便创建字典 <br>
@@ -20,14 +22,14 @@ object DictUtils {
     * @param words 数组
     * @return Dictionary 字典
     */
-  def loadDict(words: Array[String]) = {
-    val dic = Dictionary[Null](0.toChar)
+  def loadDict(words: Iterable[String]) = {
+    val dic = Dictionary(0.toChar)
     words.filter(!_.isEmpty).foreach(word => dic.addWord(word.trim))
     dic
   }
 
   def loadDict(words: util.List[String]) = {
-    val dic = Dictionary[Null](0.toChar)
+    val dic = Dictionary(0.toChar)
     words.forEach(new Consumer[String] {
       override def accept(t: String): Unit = dic.addWord(t.trim)
     })

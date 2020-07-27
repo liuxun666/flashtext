@@ -124,7 +124,7 @@ case class Dictionary[T](private var nodeChar: Char = '0') extends Comparable[Di
     */
   def disableWord(word: String): Unit = addWord(word.toCharArray, null.asInstanceOf[T], 0, word.length , false)
 
-  private def addWord(word: String, value: T): Unit = {
+  def addWord(word: String, value: T): Unit = {
     addWord(word.toCharArray, value, 0, word.length)
   }
 
